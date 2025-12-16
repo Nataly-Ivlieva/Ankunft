@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Env
+.env
+.env.*
+app/.env
+
+# DB / data
+*.sqlite
+app/data/
+
+# Frontend
+node_modules/
+dist/
+build/
+
+# Tools
+.idea/
+.DS_Store
+
+# Migrations
+alembic/versions/
+
+
+

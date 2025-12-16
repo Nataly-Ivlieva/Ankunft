@@ -1,0 +1,121 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class age {
+   name: varchar(50)
+   id: integer
+}
+class arbeit_stat {
+   country_id: integer
+   count: float
+   name: varchar(18)
+   id: integer
+}
+class categories {
+   label: varchar(255)
+   tag: varchar(255)
+   id: integer
+}
+class cities {
+   name: varchar(255)
+   region_id: integer
+   id: integer
+}
+class countries {
+   name: varchar(255)
+   protection_id: integer
+   id: integer
+}
+class genders {
+   name: varchar(20)
+   id: integer
+}
+class job_geo_statistics {
+   category_id: integer
+   region_id: integer
+   city_id: integer
+   count: integer
+   id: integer
+}
+class kurs_stat {
+   name: varchar(255)
+   count: float
+   protection_id: integer
+   id: integer
+}
+class migranten_region {
+   zusammen: float
+   arbeitslos: float
+   region_id: integer
+   id: integer
+}
+class protection {
+   name: varchar(255)
+   id: integer
+}
+class regions {
+   name: varchar(255)
+   id: integer
+}
+class salary_statistics {
+   category_id: integer
+   region_id: integer
+   month: varchar
+   salary: float
+   id: integer
+}
+class sessions {
+   token: varchar(255)
+   user_id: integer
+   created_at: datetime
+   expires_at: datetime
+   last_used: datetime
+   id: integer
+}
+class state_stat {
+   age_id: integer
+   gender_id: integer
+   protection_id: integer
+   count: float
+   name: varchar(11)
+   id: integer
+}
+class survey_questions {
+   step: integer
+   question_text: varchar(255)
+   input_type: varchar(50)
+   select_api: varchar(255)
+   statistic_api: varchar(255)
+   answer_template: varchar(500)
+   positive_hint: varchar(255)
+   id: integer
+}
+class users {
+   email: varchar(255)
+   password_hash: varchar(255)
+   role: varchar(50)
+   created_at: datetime
+   language_level: varchar(10)
+   education_level: varchar(50)
+   country_of_origin: varchar(100)
+   id: integer
+}
+
+arbeit_stat         -[#595959,plain]-^  countries          : "country_id:id"
+cities              -[#595959,plain]-^  regions            : "region_id:id"
+countries           -[#595959,plain]-^  protection         : "protection_id:id"
+job_geo_statistics  -[#595959,plain]-^  categories         : "category_id:id"
+job_geo_statistics  -[#595959,plain]-^  cities             : "city_id:id"
+job_geo_statistics  -[#595959,plain]-^  regions            : "region_id:id"
+kurs_stat           -[#595959,plain]-^  protection         : "protection_id:id"
+migranten_region    -[#595959,plain]-^  regions            : "region_id:id"
+salary_statistics   -[#595959,plain]-^  categories         : "category_id:id"
+salary_statistics   -[#595959,plain]-^  regions            : "region_id:id"
+sessions            -[#595959,plain]-^  users              : "user_id:id"
+state_stat          -[#595959,plain]-^  age                : "age_id:id"
+state_stat          -[#595959,plain]-^  genders            : "gender_id:id"
+state_stat          -[#595959,plain]-^  protection         : "protection_id:id"
+@enduml
