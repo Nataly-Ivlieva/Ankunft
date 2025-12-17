@@ -3,8 +3,8 @@ import json
 from app.db.session import engine, AsyncSession
 from sqlalchemy import select
 from app.models.base import Base
-from app.models.survey import SurveyQuestion, SurveyAnswer
-from app.models import state_stat, kurs_stat, arbeit_stat, protection, migranten_region, job_geo_statistics, salary_statistics, categories, education, language_level, genders, age, user, session, country, region, survey, city
+from app.models.survey import SurveyQuestion
+from app.models import state_stat, kurs_stat, arbeit_stat, protection, migranten_region, job_geo_statistics, salary_statistics, categories,  genders, age, user, session, country, region, survey, city
 from app.core.security import hash_password
 from app.services.adzuna_categories import load_categories
 
@@ -19,17 +19,6 @@ async def fill_reference_data():
             protection.Protection: ["Richtlinie 2001/55/EG", "Asyl"],
             age.Age: ["15 bis unter 25 Jahre", "25 bis unter 55 Jahre", "55 Jahre und älter"],
             genders.Gender: ["Männer", "Frauen", "Sonstige"],
-            language_level.LanguageLevel: ["A1", "A2", "B1", "B2", "C1", "C2"],
-            education.EducationLevel: [
-                "Ohne Hauptschulabschluss", "Mittlere Reife",
-                "Fachhochschulreife/Abitur/Hochschulreife",
-                "Fachhochschulreife/Abitur/Hochschulreife",
-                "Ohne Angabe zur Schulbildung",
-                "Ohne abgeschlossene Berufsausbildung/ Ohne Angabe",
-                "Betriebliche / schulische Ausbildung",
-                "Akademische Ausbildung",
-                "Keine Angabe"
-            ],
             region.Region: [
                 "Schleswig-Holstein", "Hamburg", "Niedersachsen", "Bremen", "Nordrhein-Westfalen",
                 "Hessen", "Rheinland-Pfalz", "Baden-Württemberg", "Bayern", "Saarland", "Berlin",
@@ -101,7 +90,7 @@ async def create_questions():
                 select_api="/api/countries",
                 statistic_api="/statistics/arbeit/by-country",
                 answer_template=(
-                       "💼 In Deutschland arbeiten bereits {employment_total} Menschen aus {country}.\n\n"
+                       "💼 In Deutschland arbeiten bereits {employment_total} Menschen aus {country}."
                         "🎓 {courses_total} Personen aus {country} nehmen aktuell an "
                         "Integrations- und Sprachkursen teil."
                 ),
@@ -116,7 +105,7 @@ async def create_questions():
                 statistic_api="/statistics/state/by-age",
                 answer_template=(
                     "📊 In Ihrer Altersgruppe sind bereits {employment_percent}% "
-                    "beruflich aktiv.\n\n"
+                    "beruflich aktiv."
                     "Der häufigste Schutzstatus ist: {protection}."
                 ),
                 positive_hint="Dein Alter ist eine Stärke – viele starten genau jetzt 🌱",
