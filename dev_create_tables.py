@@ -1,3 +1,16 @@
+"""
+Database initialization module.
+
+This module is responsible for initializing the database schema.
+It creates all required tables and populates reference (lookup) data.
+
+Typical usage:
+    Run this module once during application setup or deployment.
+
+Notes:
+    - Safe to run multiple times if tables already exist.
+    - Uses idempotent SQL statements where possible.
+"""
 import asyncio
 import json
 from app.db.session import engine, AsyncSession
