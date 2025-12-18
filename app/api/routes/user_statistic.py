@@ -1,3 +1,11 @@
+"""
+Statistics API endpoints.
+
+This module exposes aggregated statistical data used for dashboards,
+reports, and analytical views. All endpoints return precomputed or
+aggregated values and require an authenticated user.
+"""
+
 from fastapi import APIRouter, Depends
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,6 +24,7 @@ from app.models.salary_statistics import SalaryStatistic
 from app.models.region import Region
 from app.models.migranten_region import MigrantenRegion
 
+# Router for statistics and analytics endpoints
 router = APIRouter(prefix="/statistics", tags=["Statistics"])
 
 
@@ -24,6 +33,12 @@ async def migrants_by_region(
     db: AsyncSession = Depends(get_session),
     user=Depends(get_current_user),
 ):
+    """
+    Return migrant statistics grouped by region.
+
+    Provides total migrant counts and unemployment numbers
+    for each region.
+    """
     result = await db.execute(
         select(
             Region.name.label("region"),
@@ -35,8 +50,8 @@ async def migrants_by_region(
     return [
         {
             "region": r.region,
-            "zusammen": r.zusammen,
-            "arbeitslos": r.arbeitslos,
+            "total_migrants": r.zusammen,
+            "unemployed": r.arbeitslos,
         }
         for r in result
     ]
@@ -47,6 +62,12 @@ async def arbeit_by_country(
     db: AsyncSession = Depends(get_session),
     user=Depends(get_current_user),
 ):
+    """
+    Return employment statistics grouped by country.
+
+    Includes different employment types such as full-time,
+    part-time, and underemployment.
+    """
     q = (
         select(
             Country.name.label("country"),
@@ -77,6 +98,12 @@ async def state_by_age(
     db: AsyncSession = Depends(get_session),
     user=Depends(get_current_user),
 ):
+    """
+    Return employment state statistics grouped by age and protection status.
+
+    Aggregates migrant and unemployment counts for each
+    age group and protection category.
+    """
     q = (
         select(
             Age.name.label("age"),
@@ -113,6 +140,11 @@ async def kurs_by_protection(
     db: AsyncSession = Depends(get_session),
     user=Depends(get_current_user),
 ):
+    """
+    Return course participation statistics grouped by protection status.
+
+    Optionally filters results by a specific protection ID.
+    """
     q = (
         select(
             KursStat.name.label("kurs"),
@@ -142,6 +174,11 @@ async def jobs_by_region(
     db: AsyncSession = Depends(get_session),
     user=Depends(get_current_user),
 ):
+    """
+    Return job vacancy counts grouped by region and category.
+
+    Optionally filters results by job category.
+    """
     q = (
         select(
             Region.name.label("region"),
@@ -176,6 +213,12 @@ async def salary_statistics(
     db: AsyncSession = Depends(get_session),
     user=Depends(get_current_user),
 ):
+    """
+    Return salary statistics over time.
+
+    Provides monthly salary values, optionally filtered
+    by region and/or job category.
+    """
     q = (
         select(
             Region.name.label("region"),

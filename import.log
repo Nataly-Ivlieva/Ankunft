@@ -42,3 +42,5 @@
 2025-12-13 17:35:38,182 [INFO] Admin admin@admin.com finished import_arbeit()
 2025-12-13 17:40:49,013 [INFO] Admin admin@admin.com started salary import
 2025-12-13 17:43:05,506 [INFO] Salary import completed
+2025-12-17 14:31:46,269 [INFO] Admin admin@example.com started salary import
+2025-12-17 14:33:58,740 [INFO] Salary import completed
