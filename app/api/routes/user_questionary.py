@@ -14,7 +14,7 @@ from fastapi import APIRouter, Depends, Query, Body
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
+from sqlalchemy import func, case, select
 from app.api.deps import get_current_user, get_session
 from app.models import SalaryStatistic
 from app.models import (
@@ -486,9 +486,179 @@ async def survey_summary(
         {"step": 4, "label": "Berufsfeld", "value": category.label if category else ""},
         {"step": 5, "label": "Stadt", "value": city.name if city else ""},
     ]
+    title_template="Vielen Dank 🤍"
+
+    row = await db.execute(
+        select(SalaryStatistic)
+        .where(
+            SalaryStatistic.region_id == region.id,
+            SalaryStatistic.category_id == category.id,
+        )
+        .order_by(desc(SalaryStatistic.month))
+        .limit(1)
+    )
+    stat = row.scalars().first()
+    salary = int(stat.salary) if stat and stat.salary else 0
+
+    row = await db.execute(
+        select(JobGeoStatistic)
+        .where(
+            JobGeoStatistic.region_id == region.id,
+            JobGeoStatistic.category_id == category.id,
+            JobGeoStatistic.city_id == city.id,
+        )
+    )
+    stat = row.scalars().first()
+    vacancies = stat.count if stat else 0
+
+    row = await db.execute(
+        select(
+            ArbeitStat.name,
+            ArbeitStat.count,
+            (
+                ArbeitStat.count * 100.0
+                / func.sum(ArbeitStat.count).over()
+            ).label("percentage")
+        )
+        .where(ArbeitStat.country_id == payload.country_id)
+    )
+
+    arbeit_rows = row.all()
+
+    arbeit_text = ""
+
+    if arbeit_rows:
+        parts = []
+        for name, count, percentage in arbeit_rows:
+            parts.append(f"{percentage:.1f} % arbeiten in {name}")
+
+        arbeit_text = (
+            "👩‍💼 Beschäftigungsformen:\n"
+            + "• " + "\n• ".join(parts)
+        )
+
+        row = await db.execute(
+            select(
+                Age.name,
+                (
+                    (
+                        func.sum(
+                            case(
+                                (StateStat.name == "Migranten", StateStat.count),
+                                else_=0,
+                            )
+                        )
+                        - func.sum(
+                            case(
+                                (StateStat.name == "Arbeitslose", StateStat.count),
+                                else_=0,
+                            )
+                        )
+                    )
+                    * 100.0
+                    / func.nullif(
+                        func.sum(
+                            case(
+                                (StateStat.name == "Migranten", StateStat.count),
+                                else_=0,
+                            )
+                        ),
+                        0,
+                    )
+                ).label("percent_arbeitete"),
+            )
+            .join(Age, StateStat.age_id == Age.id)
+            .where(
+                StateStat.protection_id == country.protection_id,
+                StateStat.age_id.isnot(None),
+                StateStat.name.in_(["Migranten", "Arbeitslose"]),
+            )
+            .group_by(Age.id)
+            .order_by(Age.id)
+        )
+
+        age_work_rows = row.all()
+        age_work_text = ""
+
+        if age_work_rows:
+            parts = []
+            for age_name, percent in age_work_rows:
+                parts.append(f"In der Altersgruppe {age_name} sind rund {percent:.1f} % erwerbstätig")
+
+        age_work_text = (
+            "\n\n📊 Erwerbstätigkeit nach Altersgruppen:\n"
+            + "• " + "\n• ".join(parts)
+        )
+
+        migr_subq = (
+            select(func.sum(StateStat.count))
+            .where(
+                StateStat.name == "Migranten",
+                StateStat.protection_id == country.protection_id,
+                StateStat.gender_id.is_not(None),
+            )
+            .scalar_subquery()
+        )
+
+        percent_expr = (
+            func.sum(KursStat.count) * 100.0 / func.nullif(migr_subq, 0)
+        ).label("percent_of_lern")
+
+        row = await db.execute(
+            select(
+                KursStat.name.label("kurs_name"),
+                func.sum(KursStat.count).label("kurs_count"),
+                percent_expr,
+            )
+            .where(KursStat.protection_id == country.protection_id)
+            .group_by(KursStat.name)
+            .order_by(percent_expr.desc())
+        )
+
+        kurs_rows = row.all()
+
+        kurs_text = ""
+
+        if kurs_rows:
+            parts = []
+            for name, count, percent in kurs_rows[:5]:
+                parts.append(
+                    f"{percent:.1f} % nehmen an {name} teil"
+                )
+
+            kurs_text = (
+                "\n\n📚 Teilnahme an Kursen und Fördermaßnahmen:\n"
+                + "• " + "\n• ".join(parts)
+            )
+
+        text_template = (
+            "\nBasierend auf Ihren Angaben aus {country} und der Altersgruppe "
+            "{age} zeigen sich gute Perspektiven:\n"
+            "{arbeit_text}"
+            "{age_work_text}"
+            "{kurs_text}\n\n"
+            "💼 In {region} liegt das durchschnittliche Gehalt "
+            "im Bereich {category} bei etwa {salary} € brutto.\n\n"
+            "🔎 In {city} gibt es aktuell {vacancies} offene Stellen."
+
+        )
+
+        text = render_template(
+            text_template,
+            country=country.name if country else "",
+            age=age.name if age else "",
+            region=region.name if region else "",
+            category=category.label if category else "",
+            salary=salary,
+            city=city.name if city else "",
+            vacancies=vacancies,
+            arbeit_text=arbeit_text,
+            age_work_text=age_work_text,
+            kurs_text=kurs_text,
+        )
+
 
     return {
-        "title": "Vielen Dank 🤍",
-        "text": "Ihre Antworten zeigen: Integration ist möglich – Schritt für Schritt.",
-        "steps": steps,
+        "title": title_template,
+        "text": text,
     }

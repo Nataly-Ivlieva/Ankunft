@@ -162,7 +162,7 @@ async def create_questions():
                 ),
                 positive_hint="Das sind echte Chancen – und sie wachsen 🚀",
             ),
-        ]
+       ]
 
         db.add_all(questions)
         await db.commit()

@@ -33,9 +33,9 @@ export async function getStatistic(
   return apiFetch(`${url}?${query.toString()}`);
 }
 
-export async function getSummary(answers: Record<string, any>) {
+export async function getSummary(payload: any) {
   return apiFetch("/survey/summary", {
     method: "POST",
-    body: JSON.stringify(answers),
+    body: JSON.stringify(payload),
   });
 }
