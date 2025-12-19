@@ -479,13 +479,6 @@ async def survey_summary(
     category = await db.get(Category, payload.category_id)
     city = await db.get(City, payload.city_id)
 
-    steps = [
-        {"step": 1, "label": "Herkunftsland", "value": country.name if country else ""},
-        {"step": 2, "label": "Alter", "value": age.name if age else ""},
-        {"step": 3, "label": "Bundesland", "value": region.name if region else ""},
-        {"step": 4, "label": "Berufsfeld", "value": category.label if category else ""},
-        {"step": 5, "label": "Stadt", "value": city.name if city else ""},
-    ]
     title_template="Vielen Dank 🤍"
 
     row = await db.execute(
