@@ -46,3 +46,7 @@
 2025-12-17 14:33:58,740 [INFO] Salary import completed
 2025-12-18 18:08:20,178 [INFO] Admin admin@admin.com started import_state_stat()
 2025-12-18 18:08:20,635 [INFO] Admin admin@admin.com finished import_state_stat()
+2025-12-19 20:28:25,256 [INFO] Admin admin@test.de started salary import
+2025-12-19 20:28:25,352 [INFO] Salary import completed
+2025-12-19 20:34:20,656 [INFO] Admin admin@test.de started salary import
+2025-12-19 20:34:20,713 [INFO] Salary import completed
