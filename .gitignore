@@ -11,7 +11,12 @@ app/.env
 
 # DB / data
 *.sqlite
-app/data/
+app/db/
+data/
+*.db
+docs/
+frontend/login-debug.png
+frontend/test-results/
 
 # Frontend
 node_modules/
@@ -25,5 +30,6 @@ build/
 # Migrations
 alembic/versions/
 
-
+#log
+.log
 
