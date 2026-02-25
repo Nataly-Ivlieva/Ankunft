@@ -17,12 +17,12 @@ The platform converts user responses into personalized guidance and regional sta
 
 ## Architecture Overview
 
-[UseCase](images/usecase.png)
-[Architekture](images/systemarchitektur.jpg)
-[Classen](images/classendiagramm.jpg)
-[Navigation](images/navigation.jpg)
-[Datenflüss](images/datenfluss.jpg)
-[Activity](images/activitydiagramm.jpg)
+![UseCase](images/usecase.png)
+![Architekture](images/systemarchitektur.jpg)
+![Classen](images/classendiagramm.jpg)
+![Navigation](images/navigation.jpg)
+![Datenflüss](images/datenfluss.jpg)
+![Activity](images/activitydiagramm.jpg)
 
 ### Backend
 
@@ -55,17 +55,17 @@ The system aggregates user responses to generate:
 
 ## UI Preview
 
-[Registrierung](images/registrierung.jpg)
-[Anmeldung](images/anmeldung.jpg)
-[Adminpanel](images/admin.jpg)
-[Startseite](images/startseite.jpg)
-[Fragen](images/fragen.jpg)
-[MigrentenRegionen](images/migranten_regionen.jpg)
-[MigrantenAlter](images/migrenten_alter.jpg)
-[Kurses](images/kurses.jpg)
-[Gehalt](images/gehalt.jpg)
-[GehaltRegionen](images/gehalt_regionen.jpg)
-[Statistik](images/statistiken.jpg)
+![Registrierung](images/registrierung.jpg)
+![Anmeldung](images/anmeldung.jpg)
+![Adminpanel](images/admin.jpg)
+![Startseite](images/startseite.jpg)
+![Fragen](images/fragen.jpg)
+![MigrentenRegionen](images/migranten_regionen.jpg)
+![MigrantenAlter](images/migrenten_alter.jpg)
+![Kurses](images/kurses.jpg)
+![Gehalt](images/gehalt.jpg)
+![GehaltRegionen](images/gehalt_regionen.jpg)
+![Statistik](images/statistiken.jpg)
 
 Suggested screenshots:
 
