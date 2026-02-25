@@ -55,17 +55,17 @@ The system aggregates user responses to generate:
 
 ## UI Preview
 
+![Startseite](images/startseite.jpg)
+![Fragen](images/fragen.jpg)
+![Statistik](images/statistiken.jpg)
 ![Registrierung](images/registrierung.jpg)
 ![Anmeldung](images/anmeldung.jpg)
 ![Adminpanel](images/admin.jpg)
-![Startseite](images/startseite.jpg)
-![Fragen](images/fragen.jpg)
 ![MigrentenRegionen](images/migranten_regionen.jpg)
 ![MigrantenAlter](images/migrenten_alter.jpg)
 ![Kurses](images/kurses.jpg)
 ![Gehalt](images/gehalt.jpg)
 ![GehaltRegionen](images/gehalt_regionen.jpg)
-![Statistik](images/statistiken.jpg)
 
 Suggested screenshots:
 
