@@ -19,10 +19,6 @@ The platform converts user responses into personalized guidance and regional sta
 
 ![UseCase](images/usecase.png)
 ![Architekture](images/systemarchitektur.jpg)
-![Classen](images/classendiagramm.jpg)
-![Navigation](images/navigation.jpg)
-![Datenflüss](images/datenfluss.jpg)
-![Activity](images/activitydiagramm.jpg)
 
 ### Backend
 
