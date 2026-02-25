@@ -17,7 +17,6 @@ The platform converts user responses into personalized guidance and regional sta
 
 ## Architecture Overview
 
-![UseCase](images/usecase.png)
 ![Architekture](images/systemarchitektur.jpg)
 
 ### Backend
